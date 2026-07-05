@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaExpand } from 'react-icons/fa';
+import { FaTimes } from 'react-icons/fa';
 
 const memoryData = [
   { id: 1,  img: "/images/photo1.jpg",  caption: "Special Day ✨",       desc: "A beautiful beginning to a wonderful memory." },
@@ -25,7 +25,7 @@ function ImgFallback({ src, alt, className, style }) {
   const [error, setError] = useState(false);
   if (error) {
     return (
-      <div className={`${className} flex items-center justify-center bg-[#121216] text-6xl`} style={style}>
+      <div className={`${className} flex items-center justify-center bg-[#0d0d11] text-6xl`} style={style}>
         🌸
       </div>
     );
@@ -63,213 +63,180 @@ export default function DigitalGallery() {
 
   const activeMemory = memoryData[activeIndex];
 
-  // Responsive offsets based on current slide width + gap
-  const getOffsetStyle = () => {
-    return {
-      transform: `translateX(calc(-${activeIndex} * (var(--slide-width) + var(--slide-gap))))`
-    };
-  };
-
   return (
     <>
       <section
         id="gallery"
-        className="relative min-h-screen flex flex-col justify-between overflow-hidden font-outfit py-16 md:py-24"
+        className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden w-full select-none"
         style={{
-          background: '#0a0a0c',
-          // CSS custom variables for layout spacing (Saisei layout settings)
-          '--slide-width-mobile': '68vw',
-          '--slide-gap-mobile': '16px',
-          '--slide-width-tablet': '48vw',
-          '--slide-gap-tablet': '20px',
-          '--slide-width-desktop': '24vw',
-          '--slide-gap-desktop': '28px',
+          background: '#08080a',
+          // Layout variables to calculate centring calculations
+          '--card-width-mobile': '280px',
+          '--card-gap-mobile': '20px',
+          '--card-width-desktop': '450px',
+          '--card-gap-desktop': '40px',
         }}
       >
-        {/* ── BACKGROUND SYNCHRONIZATION (Saisei split view style) ── */}
+        {/* ── BACKGROUND PARALLAX SYNC ── */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.18 }}
+              animate={{ opacity: 0.28 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.85, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full"
+              transition={{ duration: 1.0, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full filter blur-[15px] scale-105"
             >
               <ImgFallback
                 src={activeMemory.img}
                 alt=""
-                className="w-full h-full object-cover scale-102"
+                className="w-full h-full object-cover"
               />
             </motion.div>
           </AnimatePresence>
-          {/* Faded overlay matching Webflow CSS */}
+          {/* Overlay mask for high contrast & dark cinematic mood */}
           <div
-            className="absolute inset-0 z-1 bg-black/75"
+            className="absolute inset-0 z-1"
             style={{
-              background: 'linear-gradient(to bottom, rgba(10,10,12,0.95) 0%, rgba(10,10,12,0.7) 50%, rgba(10,10,12,0.95) 100%)'
+              background: 'linear-gradient(to bottom, rgba(8,8,10,0.85) 0%, rgba(8,8,10,0.4) 50%, rgba(8,8,10,0.9) 100%)'
             }}
           />
         </div>
 
-        {/* ── MAIN LAYOUT WRAPPER ── */}
-        <div className="relative z-10 w-full max-w-[92vw] lg:max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex flex-col justify-between flex-1 gap-12">
+        {/* ── INTERACTIVE PHOTO SLIDES ── */}
+        <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
+          <motion.div
+            className="flex items-center"
+            style={{
+              // Center math: translate = 50vw - (half card width) - (index * (card width + gap))
+              '--card-width': 'var(--card-width-mobile)',
+              '--card-gap': 'var(--card-gap-mobile)',
+              transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${activeIndex} * (var(--card-width) + var(--card-gap)))))`
+            }}
+            className="flex items-center transition-transform duration-500 ease-out"
+          >
+            <style dangerouslySetInnerHTML={{__html: `
+              #gallery .flex {
+                --card-width: var(--card-width-mobile);
+                --card-gap: var(--card-gap-mobile);
+              }
+              @media (min-width: 768px) {
+                #gallery .flex {
+                  --card-width: var(--card-width-desktop);
+                  --card-gap: var(--card-gap-desktop);
+                }
+              }
+            `}} />
 
-          {/* 1. TOP HEADER: "Selected Project" Layout */}
-          <div className="flex items-end justify-between border-b border-white/10 pb-6 w-full">
-            <div className="flex flex-col gap-1 items-start text-left">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-semibold">
-                Selected Memory
-              </span>
-              <AnimatePresence mode="wait">
-                <motion.h2
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="font-playfair font-normal text-white text-xl sm:text-2xl md:text-3xl tracking-wide uppercase leading-tight"
+            {memoryData.map((memory, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <div
+                  key={memory.id}
+                  className="shrink-0 transition-all duration-500 relative cursor-pointer"
+                  style={{
+                    width: 'var(--card-width)',
+                    marginRight: 'var(--card-gap)',
+                    opacity: isActive ? 1 : 0.22,
+                    transform: isActive ? 'scale(1)' : 'scale(0.92)',
+                  }}
+                  onClick={() => {
+                    if (isActive) {
+                      setLightbox(memory);
+                    } else {
+                      setActiveIndex(index);
+                    }
+                  }}
                 >
-                  {activeMemory.caption}
-                </motion.h2>
-              </AnimatePresence>
-            </div>
-
-            {/* Pagination Counter */}
-            <div className="font-mono text-white text-xs sm:text-sm tracking-[0.2em] flex items-center gap-1 font-bold select-none pb-1">
-              <span>{String(activeIndex + 1).padStart(2, '0')}</span>
-              <span className="text-white/20">/</span>
-              <span className="text-white/40">{String(memoryData.length).padStart(2, '0')}</span>
-            </div>
-          </div>
-
-          {/* 2. MIDDLE SLIDER GRID: Multiple cards side-by-side */}
-          <div className="relative w-full overflow-hidden my-auto py-2">
-            <motion.div
-              className="flex select-none"
-              style={{
-                width: `${memoryData.length * 100}%`,
-                // Set CSS variables based on responsive breakpoints
-                '--slide-width': 'var(--slide-width-mobile)',
-                '--slide-gap': 'var(--slide-gap-mobile)',
-                ...getOffsetStyle()
-              }}
-              className="flex gap-[var(--slide-gap-mobile)] sm:gap-[var(--slide-gap-tablet)] lg:gap-[var(--slide-gap-desktop)] transition-transform duration-500 ease-out"
-              // Media queries simulated through tailwind class variables
-            >
-              {/* Media queries variables setting */}
-              <style dangerouslySetInnerHTML={{__html: `
-                @media (min-width: 640px) {
-                  #gallery .flex {
-                    --slide-width: var(--slide-width-tablet);
-                    --slide-gap: var(--slide-gap-tablet);
-                  }
-                }
-                @media (min-width: 1024px) {
-                  #gallery .flex {
-                    --slide-width: var(--slide-width-desktop);
-                    --slide-gap: var(--slide-gap-desktop);
-                  }
-                }
-              `}} />
-
-              {memoryData.map((memory, index) => {
-                const isActive = index === activeIndex;
-                return (
                   <div
-                    key={memory.id}
-                    className="shrink-0 transition-all duration-500 flex flex-col gap-4 text-left"
+                    className="relative aspect-[3/4] w-full rounded-sm overflow-hidden"
                     style={{
-                      width: 'var(--slide-width)',
-                      opacity: isActive ? 1 : 0.35,
+                      boxShadow: isActive 
+                        ? '0 30px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)' 
+                        : '0 10px 30px -10px rgba(0,0,0,0.6)'
                     }}
                   >
-                    {/* Portrait Image (Aspect 3/4 like Saisei projects) */}
-                    <div
-                      className="relative aspect-[3/4] w-full rounded overflow-hidden cursor-pointer group"
-                      style={{
-                        boxShadow: isActive 
-                          ? '0 20px 45px -10px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)' 
-                          : '0 8px 24px -5px rgba(0,0,0,0.4)',
-                        transition: 'box-shadow 0.4s ease'
-                      }}
-                      onClick={() => {
-                        if (isActive) {
-                          setLightbox(memory);
-                        } else {
-                          setActiveIndex(index);
-                        }
-                      }}
-                    >
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/15 group-hover:bg-transparent transition-colors duration-400 z-10" />
-
-                      {isActive && (
-                        <div className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center bg-black/45 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <FaExpand className="text-white/80 text-[10px]" />
-                        </div>
-                      )}
-
-                      <ImgFallback
-                        src={memory.img}
-                        alt={memory.caption}
-                        className="w-full h-full object-cover transform scale-101 group-hover:scale-104 transition-transform duration-700 ease-out"
-                      />
-                    </div>
-
-                    {/* Meta info stacked underneath (exact Saisei text layout) */}
-                    <div className="flex flex-col items-start gap-0.5">
-                      <h3 className="font-playfair text-white text-sm sm:text-base font-bold leading-tight uppercase tracking-wider">
-                        {memory.caption}
-                      </h3>
-                      <p className="text-white/40 text-[10px] sm:text-xs font-light uppercase tracking-widest leading-none mt-0.5">
-                        Memory #{memory.id}
-                      </p>
-                    </div>
+                    <ImgFallback
+                      src={memory.img}
+                      alt={memory.caption}
+                      className="w-full h-full object-cover select-none"
+                    />
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
+          </motion.div>
+        </div>
+
+        {/* ── UI OVERLAY ELEMENTS (Exact Screenshot Placements) ── */}
+
+        {/* TOP RIGHT: Page Counter (Playfair serif styling) */}
+        <div className="absolute top-8 right-8 md:top-12 md:right-16 z-20 select-none">
+          <p className="font-playfair font-normal text-white/80 text-xl sm:text-2xl tracking-[0.1em]">
+            {activeIndex + 1} <span className="text-white/30 mx-1">/</span> {memoryData.length}
+          </p>
+        </div>
+
+        {/* BOTTOM LEFT: Caption text block */}
+        <div className="absolute bottom-8 left-8 md:bottom-12 md:left-16 z-20 text-left max-w-sm sm:max-w-md select-none pointer-events-none">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4 }}
+            >
+              <h3 
+                className="font-playfair font-normal text-white uppercase tracking-[0.08em] leading-none mb-3"
+                style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
+              >
+                {activeMemory.caption}
+              </h3>
+              <p className="text-white/60 text-xs sm:text-sm font-light tracking-[0.15em] uppercase font-outfit">
+                {activeMemory.desc}
+              </p>
             </motion.div>
-          </div>
+          </AnimatePresence>
+        </div>
 
-          {/* 3. BOTTOM CONTROLS: Saisei Text Buttons & Bullet Track */}
-          <div className="flex items-center justify-between border-t border-white/10 pt-6 w-full select-none">
-            {/* Left: lowercase text buttons */}
-            <div className="flex items-center gap-6">
+        {/* BOTTOM RIGHT: Vertical Ticks Page Indicator */}
+        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 z-20 flex items-end gap-1.5 h-10 select-none">
+          {memoryData.map((_, i) => {
+            const isActive = i === activeIndex;
+            return (
               <button
-                onClick={handlePrev}
-                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/50 hover:text-white transition-colors duration-200 relative group pb-1"
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className="transition-all duration-300 outline-none flex items-end"
+                style={{ height: '100%' }}
               >
-                prev
-                <span className="absolute left-0 bottom-0 w-0 h-[1.5px] bg-rose-gold group-hover:w-full transition-all duration-300" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/50 hover:text-white transition-colors duration-200 relative group pb-1"
-              >
-                next
-                <span className="absolute left-0 bottom-0 w-0 h-[1.5px] bg-rose-gold group-hover:w-full transition-all duration-300" />
-              </button>
-            </div>
-
-            {/* Right: Bullet page indicators */}
-            <div className="hidden md:flex items-center gap-2">
-              {memoryData.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveIndex(i)}
-                  className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                <div
+                  className="rounded-full transition-all duration-300"
                   style={{
-                    background: i === activeIndex ? '#C9A96E' : 'rgba(255,255,255,0.18)',
-                    transform: i === activeIndex ? 'scale(1.2)' : 'none',
+                    width: isActive ? '2px' : '1px',
+                    height: isActive ? '32px' : '14px',
+                    background: isActive ? '#ffffff' : 'rgba(255,255,255,0.22)',
                   }}
                 />
-              ))}
-            </div>
-          </div>
-
+              </button>
+            );
+          })}
         </div>
+
+        {/* LEFT/RIGHT Subtle click navigators */}
+        <div 
+          onClick={handlePrev} 
+          className="absolute left-0 top-0 bottom-0 w-[15vw] z-20 cursor-w-resize"
+          title="Previous"
+        />
+        <div 
+          onClick={handleNext} 
+          className="absolute right-0 top-0 bottom-0 w-[15vw] z-20 cursor-e-resize"
+          title="Next"
+        />
+
       </section>
 
       {/* ── LIGHTBOX WINDOW ── */}
