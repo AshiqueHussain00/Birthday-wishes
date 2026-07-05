@@ -179,27 +179,47 @@ export default function DigitalGallery() {
           </p>
         </div>
 
-        {/* BOTTOM LEFT: Caption text block */}
-        <div className="absolute bottom-8 left-8 md:bottom-12 md:left-16 z-20 text-left max-w-sm sm:max-w-md select-none pointer-events-none">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4 }}
-            >
-              <h3 
-                className="font-playfair font-normal text-white uppercase tracking-[0.08em] leading-none mb-3"
-                style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
+        {/* BOTTOM LEFT: Caption text block & Navigation */}
+        <div className="absolute bottom-8 left-8 md:bottom-12 md:left-16 z-20 text-left max-w-sm sm:max-w-md select-none">
+          <div className="pointer-events-none">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
               >
-                {activeMemory.caption}
-              </h3>
-              <p className="text-white/60 text-xs sm:text-sm font-light tracking-[0.15em] uppercase font-outfit">
-                {activeMemory.desc}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+                <h3 
+                  className="font-playfair font-normal text-white uppercase tracking-[0.08em] leading-none mb-3"
+                  style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
+                >
+                  {activeMemory.caption}
+                </h3>
+                <p className="text-white/60 text-xs sm:text-sm font-light tracking-[0.15em] uppercase font-outfit">
+                  {activeMemory.desc}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          
+          {/* Text Navigation Links */}
+          <div className="flex items-center gap-6 mt-6 md:mt-8 text-white/60 font-outfit text-xs tracking-[0.2em] uppercase font-light pointer-events-auto">
+            <button 
+              onClick={handlePrev} 
+              className="hover:text-white transition-colors relative group py-1"
+            >
+              Prev
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={handleNext} 
+              className="hover:text-white transition-colors relative group py-1"
+            >
+              Next
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </button>
+          </div>
         </div>
 
         {/* BOTTOM RIGHT: Vertical Ticks Page Indicator */}
@@ -224,26 +244,6 @@ export default function DigitalGallery() {
               </button>
             );
           })}
-        </div>
-
-        {/* LEFT/RIGHT Subtle click navigators & Circular Arrows */}
-        <div 
-          onClick={handlePrev} 
-          className="absolute left-0 top-0 bottom-0 w-[15vw] z-20 cursor-w-resize group flex items-center pl-4 md:pl-12"
-          title="Previous"
-        >
-           <div className="w-12 h-12 flex items-center justify-center rounded-full border border-white/0 group-hover:border-white/20 bg-transparent group-hover:bg-white/5 text-transparent group-hover:text-white transition-all duration-300 backdrop-blur-sm -translate-x-4 group-hover:translate-x-0">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-           </div>
-        </div>
-        <div 
-          onClick={handleNext} 
-          className="absolute right-0 top-0 bottom-0 w-[15vw] z-20 cursor-e-resize group flex items-center justify-end pr-4 md:pr-12"
-          title="Next"
-        >
-           <div className="w-12 h-12 flex items-center justify-center rounded-full border border-white/0 group-hover:border-white/20 bg-transparent group-hover:bg-white/5 text-transparent group-hover:text-white transition-all duration-300 backdrop-blur-sm translate-x-4 group-hover:translate-x-0">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-           </div>
         </div>
 
       </section>
