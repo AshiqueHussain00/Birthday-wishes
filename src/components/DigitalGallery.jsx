@@ -145,7 +145,7 @@ export default function DigitalGallery() {
             return (
               <motion.div
                 key={memory.id}
-                className="absolute w-[65vw] sm:w-[280px] md:w-[400px] aspect-[3/4] rounded-sm overflow-hidden pointer-events-auto cursor-pointer"
+                className="absolute w-[65vw] sm:w-[280px] md:w-[400px] aspect-[3/4] rounded-sm overflow-hidden pointer-events-auto cursor-grab active:cursor-grabbing"
                 animate={{ x, scale, opacity, zIndex }}
                 transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 1 }}
                 style={{
@@ -153,6 +153,17 @@ export default function DigitalGallery() {
                   boxShadow: diff === 0 
                     ? '0 30px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)' 
                     : '0 10px 30px -10px rgba(0,0,0,0.6)'
+                }}
+                drag={isInteractive ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.6}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = offset.x;
+                  if (swipe < -40 || velocity.x < -200) {
+                    handleNext();
+                  } else if (swipe > 40 || velocity.x > 200) {
+                    handlePrev();
+                  }
                 }}
                 onClick={() => {
                   if (diff === 0) setLightbox(memory);
@@ -163,7 +174,7 @@ export default function DigitalGallery() {
                 <ImgFallback
                   src={memory.img}
                   alt={memory.caption}
-                  className="w-full h-full object-cover select-none"
+                  className="w-full h-full object-cover select-none pointer-events-none"
                 />
               </motion.div>
             );
