@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts are loaded via <link> in index.html */
+
+
+/* ─── Base reset ───────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FBF7F1;
+  color: #1C1C1E;
+  overflow-x: hidden;
+  font-family: 'Outfit', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Custom Scrollbar ─────────────────────────── */
+::-webkit-scrollbar          { width: 6px; }
+::-webkit-scrollbar-track    { background: #FBF7F1; }
+::-webkit-scrollbar-thumb    { background: linear-gradient(180deg, #C2788A, #9C4A5C); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #9C4A5C; }
+
+/* ─── Selection color ──────────────────────────── */
+::selection {
+  background: rgba(194,120,138,0.25);
+  color: #6B2D3E;
+}
+
+@layer utilities {
+
+  /* Glassmorphism variants */
+  .glass-elegant {
+    background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.65);
+    box-shadow: 0 8px 32px rgba(194,120,138,0.10), inset 0 0 20px rgba(255,255,255,0.2);
+  }
+
+  .glass-premium {
+    background: linear-gradient(135deg, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.20) 100%);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255,255,255,0.70);
+    box-shadow:
+      0 24px 60px rgba(156,74,92,0.08),
+      0 4px 12px rgba(156,74,92,0.05),
+      inset 0 0 30px rgba(255,255,255,0.25);
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 4px 24px rgba(156,74,92,0.07), 0 1px 4px rgba(156,74,92,0.04);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 16px 50px rgba(156,74,92,0.13), 0 4px 12px rgba(156,74,92,0.07);
+  }
+
+  /* Gradient text */
+  .text-gradient-rose {
+    background: linear-gradient(135deg, #C2788A 0%, #9C4A5C 50%, #C9A96E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #C9A96E 0%, #DEB887 50%, #C9A96E 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  /* Glow effects */
+  .glow-rose {
+    box-shadow: 0 0 40px rgba(194,120,138,0.22), 0 0 80px rgba(194,120,138,0.08);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 35px rgba(201,169,110,0.28), 0 0 70px rgba(201,169,110,0.10);
+  }
+
+  /* Section divider ornament */
+  .ornament-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ornament-divider::before,
+  .ornament-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(194,120,138,0.35), transparent);
+  }
+
+  /* Shimmer card highlight */
+  .shimmer-highlight {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-highlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+    background-size: 200% 100%;
+    animation: shimmer 3.5s ease-in-out infinite;
+  }
+
+  /* Badge pill */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid rgba(194,120,138,0.28);
+    background: rgba(194,120,138,0.08);
+    color: #9C4A5C;
+  }
+
+  /* Timeline line */
+  .timeline-line {
+    border-image: linear-gradient(to bottom, transparent, #C2788A 20%, #C9A96E 80%, transparent) 1;
+  }
+}
+
+/* ─── Shimmer keyframes (used by utilities) ────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
