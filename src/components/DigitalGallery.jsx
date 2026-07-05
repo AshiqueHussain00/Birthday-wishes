@@ -43,12 +43,14 @@ export default function DigitalGallery() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightbox, setLightbox]       = useState(null);
 
+  const total = memoryData.length;
+
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % memoryData.length);
+    setActiveIndex((prev) => (prev + 1) % total);
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + memoryData.length) % memoryData.length);
+    setActiveIndex((prev) => (prev - 1 + total) % total);
   };
 
   // Keyboard navigation
@@ -63,26 +65,12 @@ export default function DigitalGallery() {
 
   const activeMemory = memoryData[activeIndex];
 
-  // Center translation calculation
-  const getOffsetStyle = () => {
-    return {
-      transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${activeIndex} * (var(--card-width) + var(--card-gap)))))`
-    };
-  };
-
   return (
     <>
       <section
         id="gallery"
         className="relative h-screen min-h-[600px] flex flex-col justify-between overflow-hidden w-full select-none"
-        style={{
-          background: '#08080a',
-          // Custom dimensions for exactly 3 cards layout
-          '--card-width-mobile': '280px',
-          '--card-gap-mobile': '20px',
-          '--card-width-desktop': '450px',
-          '--card-gap-desktop': '40px',
-        }}
+        style={{ background: '#08080a' }}
       >
         {/* ── BACKGROUND PARALLAX SYNC ── */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -111,75 +99,75 @@ export default function DigitalGallery() {
           />
         </div>
 
-        {/* ── INTERACTIVE PHOTO SLIDES (Strictly 3 Visible) ── */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
-          <motion.div
-            className="flex items-center"
-            style={{
-              '--card-width': 'var(--card-width-mobile)',
-              '--card-gap': 'var(--card-gap-mobile)',
-              ...getOffsetStyle()
-            }}
-            className="flex items-center transition-transform duration-500 ease-out"
-          >
-            <style dangerouslySetInnerHTML={{__html: `
-              #gallery .flex {
-                --card-width: var(--card-width-mobile);
-                --card-gap: var(--card-gap-mobile);
-              }
-              @media (min-width: 768px) {
-                #gallery .flex {
-                  --card-width: var(--card-width-desktop);
-                  --card-gap: var(--card-gap-desktop);
-                }
-              }
-            `}} />
+        {/* ── INTERACTIVE PHOTO SLIDES (Strictly 3 Visible with Absolute Positioning & Infinite Loop) ── */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+          {memoryData.map((memory, index) => {
+            // Calculate shortest distance in a circle
+            let diff = index - activeIndex;
+            if (diff < -Math.floor(total / 2)) diff += total;
+            if (diff > Math.floor(total / 2)) diff -= total;
 
-            {memoryData.map((memory, index) => {
-              const isActive = index === activeIndex;
-              const isLeft   = index === activeIndex - 1;
-              const isRight  = index === activeIndex + 1;
-              const isVisible = isActive || isLeft || isRight;
+            let x = '0%';
+            let scale = 0.85;
+            let opacity = 0;
+            let zIndex = 0;
+            let isInteractive = false;
 
-              return (
-                <div
-                  key={memory.id}
-                  className="shrink-0 transition-all duration-500 relative cursor-pointer"
-                  style={{
-                    width: 'var(--card-width)',
-                    marginRight: 'var(--card-gap)',
-                    // Only display Left, Center and Right cards. Hide everything else completely.
-                    opacity: isActive ? 1 : isLeft || isRight ? 0.3 : 0,
-                    pointerEvents: isVisible ? 'auto' : 'none',
-                    transform: isActive ? 'scale(1)' : 'scale(0.85)',
-                    transition: 'opacity 0.5s ease, transform 0.5s ease',
-                  }}
-                  onClick={() => {
-                    if (isActive) {
-                      setLightbox(memory);
-                    } else {
-                      setActiveIndex(index);
-                    }
-                  }}
-                >
-                  <div
-                    className="relative aspect-[3/4] w-full rounded-sm overflow-hidden"
-                    style={{
-                      boxShadow: isActive 
-                        ? '0 30px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)' 
-                        : '0 10px 30px -10px rgba(0,0,0,0.6)'
-                    }}
-                  >
-                    <ImgFallback
-                      src={memory.img}
-                      alt={memory.caption}
-                      className="w-full h-full object-cover select-none"
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </motion.div>
+            if (diff === 0) {
+              // Center card
+              x = '0%';
+              scale = 1;
+              opacity = 1;
+              zIndex = 10;
+              isInteractive = true;
+            } else if (diff === -1) {
+              // Left card
+              x = '-110%';
+              scale = 0.85;
+              opacity = 0.35;
+              zIndex = 5;
+              isInteractive = true;
+            } else if (diff === 1) {
+              // Right card
+              x = '110%';
+              scale = 0.85;
+              opacity = 0.35;
+              zIndex = 5;
+              isInteractive = true;
+            } else {
+              // Hidden cards (pre-positioned off-screen for smooth sliding in)
+              x = diff < 0 ? '-220%' : '220%';
+              scale = 0.85;
+              opacity = 0;
+              zIndex = 0;
+            }
+
+            return (
+              <motion.div
+                key={memory.id}
+                className="absolute w-[65vw] sm:w-[280px] md:w-[400px] aspect-[3/4] rounded-sm overflow-hidden pointer-events-auto cursor-pointer"
+                animate={{ x, scale, opacity, zIndex }}
+                transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 1 }}
+                style={{
+                  pointerEvents: isInteractive ? 'auto' : 'none',
+                  boxShadow: diff === 0 
+                    ? '0 30px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)' 
+                    : '0 10px 30px -10px rgba(0,0,0,0.6)'
+                }}
+                onClick={() => {
+                  if (diff === 0) setLightbox(memory);
+                  else if (diff === -1) handlePrev();
+                  else if (diff === 1) handleNext();
+                }}
+              >
+                <ImgFallback
+                  src={memory.img}
+                  alt={memory.caption}
+                  className="w-full h-full object-cover select-none"
+                />
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* ── UI OVERLAY ELEMENTS ── */}
@@ -187,7 +175,7 @@ export default function DigitalGallery() {
         {/* TOP RIGHT: Page Counter */}
         <div className="absolute top-8 right-8 md:top-12 md:right-16 z-20 select-none">
           <p className="font-playfair font-normal text-white/80 text-xl sm:text-2xl tracking-[0.1em]">
-            {activeIndex + 1} <span className="text-white/30 mx-1">/</span> {memoryData.length}
+            {activeIndex + 1} <span className="text-white/30 mx-1">/</span> {total}
           </p>
         </div>
 
@@ -215,20 +203,20 @@ export default function DigitalGallery() {
         </div>
 
         {/* BOTTOM RIGHT: Vertical Ticks Page Indicator */}
-        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 z-20 flex items-end gap-1.5 h-10 select-none">
+        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 z-20 flex items-end gap-1 h-10 select-none max-w-[40vw] flex-wrap justify-end">
           {memoryData.map((_, i) => {
             const isActive = i === activeIndex;
             return (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className="transition-all duration-300 outline-none flex items-end"
+                className="transition-all duration-300 outline-none flex items-end py-2 px-[2px]"
                 style={{ height: '100%' }}
               >
                 <div
                   className="rounded-full transition-all duration-300"
                   style={{
-                    width: isActive ? '2.5px' : '1px',
+                    width: isActive ? '2px' : '1px',
                     height: isActive ? '32px' : '14px',
                     background: isActive ? '#ffffff' : 'rgba(255,255,255,0.22)',
                   }}
@@ -241,12 +229,12 @@ export default function DigitalGallery() {
         {/* LEFT/RIGHT Subtle click navigators */}
         <div 
           onClick={handlePrev} 
-          className="absolute left-0 top-0 bottom-0 w-[20vw] z-20 cursor-w-resize"
+          className="absolute left-0 top-0 bottom-0 w-[15vw] z-20 cursor-w-resize"
           title="Previous"
         />
         <div 
           onClick={handleNext} 
-          className="absolute right-0 top-0 bottom-0 w-[20vw] z-20 cursor-e-resize"
+          className="absolute right-0 top-0 bottom-0 w-[15vw] z-20 cursor-e-resize"
           title="Next"
         />
 
@@ -275,7 +263,7 @@ export default function DigitalGallery() {
               onClick={(e) => {
                 e.stopPropagation();
                 const idx = memoryData.findIndex(m => m.id === lightbox.id);
-                setLightbox(memoryData[(idx - 1 + memoryData.length) % memoryData.length]);
+                setLightbox(memoryData[(idx - 1 + total) % total]);
               }}
               className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white flex items-center justify-center transition-all z-[100]"
             >
@@ -286,7 +274,7 @@ export default function DigitalGallery() {
               onClick={(e) => {
                 e.stopPropagation();
                 const idx = memoryData.findIndex(m => m.id === lightbox.id);
-                setLightbox(memoryData[(idx + 1) % memoryData.length]);
+                setLightbox(memoryData[(idx + 1) % total]);
               }}
               className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white flex items-center justify-center transition-all z-[100]"
             >
@@ -307,7 +295,7 @@ export default function DigitalGallery() {
               />
               <div className="absolute bottom-4 left-4 right-4 p-5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-left">
                 <span className="font-mono text-rose-gold text-xs font-bold uppercase tracking-wider block mb-1">
-                  Memory Card {lightbox.id} / {memoryData.length}
+                  Memory Card {lightbox.id} / {total}
                 </span>
                 <h4 className="font-playfair font-extrabold text-white text-lg sm:text-xl">
                   {lightbox.caption}
