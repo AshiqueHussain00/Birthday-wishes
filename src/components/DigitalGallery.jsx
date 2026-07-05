@@ -202,28 +202,49 @@ export default function DigitalGallery() {
           </AnimatePresence>
         </div>
 
-        {/* BOTTOM RIGHT: Vertical Ticks Page Indicator */}
-        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 z-20 flex items-end gap-1 h-10 select-none max-w-[40vw] flex-wrap justify-end">
-          {memoryData.map((_, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                className="transition-all duration-300 outline-none flex items-end py-2 px-[2px]"
-                style={{ height: '100%' }}
-              >
-                <div
-                  className="rounded-full transition-all duration-300"
-                  style={{
-                    width: isActive ? '2px' : '1px',
-                    height: isActive ? '32px' : '14px',
-                    background: isActive ? '#ffffff' : 'rgba(255,255,255,0.22)',
-                  }}
-                />
-              </button>
-            );
-          })}
+        {/* BOTTOM RIGHT: Navigation Controls & Vertical Ticks */}
+        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 z-20 flex flex-col items-end gap-6 select-none">
+          {/* Text Links: Prev / Next */}
+          <div className="flex items-center gap-6 text-white/50 font-outfit text-xs tracking-[0.2em] uppercase font-light">
+            <button 
+              onClick={handlePrev} 
+              className="hover:text-white transition-colors relative group py-1"
+            >
+              Prev
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={handleNext} 
+              className="hover:text-white transition-colors relative group py-1"
+            >
+              Next
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all group-hover:w-full"></span>
+            </button>
+          </div>
+
+          {/* Vertical Ticks */}
+          <div className="flex items-end gap-1 h-10 max-w-[40vw] flex-wrap justify-end">
+            {memoryData.map((_, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setActiveIndex(i)}
+                  className="transition-all duration-300 outline-none flex items-end py-2 px-[2px]"
+                  style={{ height: '100%' }}
+                >
+                  <div
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      width: isActive ? '2px' : '1px',
+                      height: isActive ? '32px' : '14px',
+                      background: isActive ? '#ffffff' : 'rgba(255,255,255,0.22)',
+                    }}
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* LEFT/RIGHT Subtle click navigators */}
