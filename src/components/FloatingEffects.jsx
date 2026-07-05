@@ -76,7 +76,7 @@ export default function FloatingEffects() {
       }
     }
 
-    const petalsCount = Math.min(60, Math.floor((width * height) / 25000));
+    const petalsCount = Math.min(30, Math.floor((width * height) / 45000));
     const petals = Array.from({ length: petalsCount }, () => new Petal());
 
     const render = () => {

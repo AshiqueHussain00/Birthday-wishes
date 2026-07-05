@@ -32,7 +32,8 @@ function ImgFallback({ src, alt, className, style }) {
   }
   return (
     <img
-      src={src} alt={alt} loading="eager"
+      src={src} alt={alt} 
+      loading="lazy" decoding="async"
       className={className} style={style}
       onError={() => setError(true)}
     />
@@ -72,32 +73,13 @@ export default function DigitalGallery() {
         className="relative h-screen min-h-[600px] flex flex-col justify-between overflow-hidden w-full select-none"
         style={{ background: '#08080a' }}
       >
-        {/* ── BACKGROUND PARALLAX SYNC ── */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.28 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.0, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full filter blur-[15px] scale-105"
-            >
-              <ImgFallback
-                src={activeMemory.img}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </AnimatePresence>
-          {/* Overlay mask for high contrast & dark cinematic mood */}
-          <div
-            className="absolute inset-0 z-1"
-            style={{
-              background: 'linear-gradient(to bottom, rgba(8,8,10,0.85) 0%, rgba(8,8,10,0.4) 50%, rgba(8,8,10,0.9) 100%)'
-            }}
-          />
-        </div>
+        {/* ── BACKGROUND (Static Gradient for High Mobile Performance) ── */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at center, #1a1a24 0%, #08080a 100%)'
+          }}
+        />
 
         {/* ── INTERACTIVE PHOTO SLIDES (Strictly 3 Visible with Absolute Positioning & Infinite Loop) ── */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
