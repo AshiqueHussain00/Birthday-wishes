@@ -63,14 +63,21 @@ export default function DigitalGallery() {
 
   const activeMemory = memoryData[activeIndex];
 
+  // Center translation calculation
+  const getOffsetStyle = () => {
+    return {
+      transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${activeIndex} * (var(--card-width) + var(--card-gap)))))`
+    };
+  };
+
   return (
     <>
       <section
         id="gallery"
-        className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden w-full select-none"
+        className="relative h-screen min-h-[600px] flex flex-col justify-between overflow-hidden w-full select-none"
         style={{
           background: '#08080a',
-          // Layout variables to calculate centring calculations
+          // Custom dimensions for exactly 3 cards layout
           '--card-width-mobile': '280px',
           '--card-gap-mobile': '20px',
           '--card-width-desktop': '450px',
@@ -104,15 +111,14 @@ export default function DigitalGallery() {
           />
         </div>
 
-        {/* ── INTERACTIVE PHOTO SLIDES ── */}
+        {/* ── INTERACTIVE PHOTO SLIDES (Strictly 3 Visible) ── */}
         <div className="relative z-10 w-full h-full flex items-center justify-center overflow-hidden">
           <motion.div
             className="flex items-center"
             style={{
-              // Center math: translate = 50vw - (half card width) - (index * (card width + gap))
               '--card-width': 'var(--card-width-mobile)',
               '--card-gap': 'var(--card-gap-mobile)',
-              transform: `translateX(calc(50vw - (var(--card-width) / 2) - (${activeIndex} * (var(--card-width) + var(--card-gap)))))`
+              ...getOffsetStyle()
             }}
             className="flex items-center transition-transform duration-500 ease-out"
           >
@@ -131,6 +137,10 @@ export default function DigitalGallery() {
 
             {memoryData.map((memory, index) => {
               const isActive = index === activeIndex;
+              const isLeft   = index === activeIndex - 1;
+              const isRight  = index === activeIndex + 1;
+              const isVisible = isActive || isLeft || isRight;
+
               return (
                 <div
                   key={memory.id}
@@ -138,8 +148,11 @@ export default function DigitalGallery() {
                   style={{
                     width: 'var(--card-width)',
                     marginRight: 'var(--card-gap)',
-                    opacity: isActive ? 1 : 0.22,
-                    transform: isActive ? 'scale(1)' : 'scale(0.92)',
+                    // Only display Left, Center and Right cards. Hide everything else completely.
+                    opacity: isActive ? 1 : isLeft || isRight ? 0.3 : 0,
+                    pointerEvents: isVisible ? 'auto' : 'none',
+                    transform: isActive ? 'scale(1)' : 'scale(0.85)',
+                    transition: 'opacity 0.5s ease, transform 0.5s ease',
                   }}
                   onClick={() => {
                     if (isActive) {
@@ -169,9 +182,9 @@ export default function DigitalGallery() {
           </motion.div>
         </div>
 
-        {/* ── UI OVERLAY ELEMENTS (Exact Screenshot Placements) ── */}
+        {/* ── UI OVERLAY ELEMENTS ── */}
 
-        {/* TOP RIGHT: Page Counter (Playfair serif styling) */}
+        {/* TOP RIGHT: Page Counter */}
         <div className="absolute top-8 right-8 md:top-12 md:right-16 z-20 select-none">
           <p className="font-playfair font-normal text-white/80 text-xl sm:text-2xl tracking-[0.1em]">
             {activeIndex + 1} <span className="text-white/30 mx-1">/</span> {memoryData.length}
@@ -215,7 +228,7 @@ export default function DigitalGallery() {
                 <div
                   className="rounded-full transition-all duration-300"
                   style={{
-                    width: isActive ? '2px' : '1px',
+                    width: isActive ? '2.5px' : '1px',
                     height: isActive ? '32px' : '14px',
                     background: isActive ? '#ffffff' : 'rgba(255,255,255,0.22)',
                   }}
@@ -228,12 +241,12 @@ export default function DigitalGallery() {
         {/* LEFT/RIGHT Subtle click navigators */}
         <div 
           onClick={handlePrev} 
-          className="absolute left-0 top-0 bottom-0 w-[15vw] z-20 cursor-w-resize"
+          className="absolute left-0 top-0 bottom-0 w-[20vw] z-20 cursor-w-resize"
           title="Previous"
         />
         <div 
           onClick={handleNext} 
-          className="absolute right-0 top-0 bottom-0 w-[15vw] z-20 cursor-e-resize"
+          className="absolute right-0 top-0 bottom-0 w-[20vw] z-20 cursor-e-resize"
           title="Next"
         />
 
