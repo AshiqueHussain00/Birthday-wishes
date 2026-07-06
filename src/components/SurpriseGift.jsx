@@ -35,17 +35,12 @@ const wishes = [
   },
 ];
 
-/* ─── Confetti burst ─── */
 function fireConfetti() {
   const colors = ['#C2788A','#C9A96E','#FFF0F2','#F5E6C8','#DEB887','#FF91C8'];
-  const end = Date.now() + 3800;
-  const frame = () => {
-    confetti({ particleCount: 6, angle: 60,  spread: 55, origin: { x: 0,   y: 0.7 }, colors });
-    confetti({ particleCount: 6, angle: 120, spread: 55, origin: { x: 1,   y: 0.7 }, colors });
-    confetti({ particleCount: 4, angle: 90,  spread: 70, origin: { x: 0.5, y: 0.6 }, colors });
-    if (Date.now() < end) requestAnimationFrame(frame);
-  };
-  frame();
+  // Fire three quick, elegant bursts of confetti
+  confetti({ particleCount: 45, spread: 60, origin: { y: 0.8 }, colors });
+  confetti({ particleCount: 25, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors });
+  confetti({ particleCount: 25, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors });
 }
 
 /* ─── Static decorative dot (no motion.div needed) ─── */

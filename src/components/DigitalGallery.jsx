@@ -66,7 +66,7 @@ export default function DigitalGallery() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const activeMemory = memoryData[activeIndex];
+  const activeMemory = memoryData[activeIndex] || memoryData[0];
 
   return (
     <>

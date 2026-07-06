@@ -4,14 +4,11 @@ import { FaPlay, FaPause, FaRedo, FaTimes } from 'react-icons/fa';
 
 /* ══════════════════════════════════════════════
    CONSTANTS
-══════════════════════════════════════════════ */
-const TOTAL      = 30;
-const SCENE_DUR  = 5;
-const NUM_SCENES = 6;
+════════�const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
 /* ══════════════════════════════════════════════
    CANVAS — ANIME PARTICLE SYSTEM
-══════════════════════════════════════════════ */
+   ══════════════════════════════════════════════ */
 
 /* Draw a classic 4-pointed anime sparkle ✦ */
 function drawSparkle(ctx, x, y, r, color, alpha) {
@@ -30,9 +27,13 @@ function drawSparkle(ctx, x, y, r, color, alpha) {
   }
   ctx.closePath();
   ctx.fill();
-  // glow
-  ctx.shadowColor = color;
-  ctx.shadowBlur  = r * 2.5;
+  
+  // glow - DISABLED on mobile for extreme performance increase
+  if (!isMobileDevice) {
+    ctx.shadowColor = color;
+    ctx.shadowBlur  = r * 2.5;
+  }
+  
   ctx.stroke();
   ctx.restore();
 }
@@ -57,14 +58,23 @@ function drawPetal(ctx, x, y, r, angle, color, alpha) {
 function drawOrb(ctx, x, y, r, color, alpha) {
   ctx.save();
   ctx.globalAlpha = alpha;
-  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-  g.addColorStop(0, 'white');
-  g.addColorStop(0.3, color);
-  g.addColorStop(1, 'transparent');
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.fill();
+  
+  // Radial gradient is slower on mobile, so we use a simpler flat circle if on mobile
+  if (isMobileDevice) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'white');
+    g.addColorStop(0.3, color);
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
   ctx.restore();
 }
 
@@ -76,8 +86,10 @@ function drawSpeedLines(ctx, W, H, alpha) {
   ctx.strokeStyle = 'white';
   ctx.lineWidth = 1;
   const cx = W / 2, cy = H / 2;
-  for (let i = 0; i < 60; i++) {
-    const a = (i / 60) * Math.PI * 2;
+  // Reduce speed lines count on mobile
+  const linesCount = isMobileDevice ? 25 : 60;
+  for (let i = 0; i < linesCount; i++) {
+    const a = (i / linesCount) * Math.PI * 2;
     const r0 = Math.min(W, H) * 0.08;
     const r1 = Math.min(W, H) * 1.1;
     ctx.beginPath();
@@ -93,7 +105,11 @@ function buildPool(W, H) {
   const sparkleColors = ['#FFE5F0','#FFB3D1','#E5B3FF','#B3D9FF','#FFE0B3','#B3FFD9','#FFFACD'];
   const petalColors   = ['#FFB6C8','#FF91A8','#FFCCD8','#F4A0B5','#FFD6E0'];
 
-  const sparkles = Array.from({ length: 55 }, () => ({
+  const sparkleCount = isMobileDevice ? 18 : 55;
+  const petalCount   = isMobileDevice ? 15 : 40;
+  const orbCount     = isMobileDevice ? 6 : 18;
+
+  const sparkles = Array.from({ length: sparkleCount }, () => ({
     type: 'sparkle',
     x: Math.random() * W, y: Math.random() * H,
     vx: (Math.random() - 0.5) * 0.6,
@@ -106,7 +122,7 @@ function buildPool(W, H) {
     born: Math.random() * 200,
   }));
 
-  const petals = Array.from({ length: 40 }, () => ({
+  const petals = Array.from({ length: petalCount }, () => ({
     type: 'petal',
     x: Math.random() * W, y: Math.random() * H - H * 0.2,
     vx: (Math.random() - 0.5) * 0.8,
@@ -118,7 +134,7 @@ function buildPool(W, H) {
     alpha: Math.random() * 0.55 + 0.3,
   }));
 
-  const orbs = Array.from({ length: 18 }, () => ({
+  const orbs = Array.from({ length: orbCount }, () => ({
     type: 'orb',
     x: Math.random() * W, y: Math.random() * H,
     vx: (Math.random() - 0.5) * 0.4,
@@ -907,3 +923,4 @@ export default function BirthdayVideo({ onClose }) {
     </motion.div>
   );
 }
+
