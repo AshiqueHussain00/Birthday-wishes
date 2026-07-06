@@ -28,8 +28,9 @@ export default function WelcomeScreen({ onStart }) {
           <span className="font-script text-[#C2788A] font-normal px-2 text-5xl sm:text-6xl md:text-7xl lowercase">to</span> Priyanka
         </h1>
         
-        <p className="font-outfit text-xs sm:text-sm md:text-base text-[#7A6E78] tracking-[0.25em] uppercase mb-12 opacity-80">
-          A Celebration of Beautiful Memories
+        <p className="font-outfit text-sm sm:text-base md:text-lg text-[#7A6E78] tracking-wide mb-12 opacity-90 max-w-lg mx-auto leading-relaxed">
+          "Sending you all my love and the absolute best wishes, Priyanka." <br/>
+          <span className="font-script text-[#C2788A] text-2xl sm:text-3xl mt-2 inline-block">— Ashique</span>
         </p>
 
         {/* Get Started Button */}
