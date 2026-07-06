@@ -7,17 +7,11 @@ const memoryData = [
   { id: 2,  img: "/images/photo2.jpg",  caption: "Warm Smiles 🌸",       desc: "Your happiness spreads light to everyone around you." },
   { id: 3,  img: "/images/photo3.jpg",  caption: "Sweet Moments 💖",     desc: "A cozy time filled with warmth and peaceful thoughts." },
   { id: 4,  img: "/images/photo4.jpg",  caption: "To Many More! 🥂",     desc: "Cheers to a fabulous year ahead." },
-  { id: 5,  img: "/images/photo5.jpg",  caption: "Perfect Joy ⭐",        desc: "Capturing the essence of pure delight." },
-  { id: 6,  img: "/images/photo6.jpg",  caption: "Golden Hour 🌟",       desc: "Shining bright under the perfect warm light." },
-  { id: 7,  img: "/images/photo7.jpg",  caption: "Happy Heart 💕",       desc: "Always finding reasons to smile and celebrate." },
-  { id: 8,  img: "/images/photo8.jpg",  caption: "Gentle Breeze 🍃",     desc: "Soft, tranquil moments that make life beautiful." },
-  { id: 9,  img: "/images/photo9.jpg",  caption: "Magic in the Air 🪄",  desc: "When every single detail feels just right." },
-  { id: 10, img: "/images/photo10.jpg", caption: "True Radiance ☀️",     desc: "Your positive spirit is truly inspiring." },
-  { id: 11, img: "/images/photo11.jpg", caption: "Lovely Memories 🥰",   desc: "Looking back at the path of happy days." },
-  { id: 12, img: "/images/photo12.jpg", caption: "Laughter & Fun 🎉",    desc: "Savoring the best times with loved ones." },
-  { id: 13, img: "/images/photo13.jpg", caption: "Dream Big 🌠",         desc: "Wishing you strength to reach every milestone." },
-  { id: 14, img: "/images/photo14.jpg", caption: "Brighter Days 🌈",     desc: "A colorful, cheerful tomorrow awaits." },
-  { id: 15, img: "/images/photo15.jpg", caption: "Forever Cherished 💝", desc: "Keeping these precious moments close to the heart." },
+  { id: 5,  img: "/images/photo5.jpg",  caption: "Peace & Vibes ✌️",     desc: "Spreading sunshine with that gorgeous smile." },
+  { id: 6,  img: "/images/photo6.jpg",  caption: "Lovely You 💕",        desc: "Grace and beauty in every single frame." },
+  { id: 7,  img: "/images/photo7.jpg",  caption: "Bold & Beautiful 😎",  desc: "Confidence that shines brighter than any filter." },
+  { id: 8,  img: "/images/photo8.jpg",  caption: "Elegant Vibes 🖤",     desc: "Simple, stunning, and absolutely unforgettable." },
+  { id: 9,  img: "/images/photo9.jpg",  caption: "Golden Hour 🌟",       desc: "Glowing with warmth under the perfect light." },
 ];
 
 /* ─── Image Fallback ─── */
