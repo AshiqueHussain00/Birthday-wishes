@@ -166,6 +166,16 @@ export default function DigitalGallery() {
 
         {/* ── UI OVERLAY ELEMENTS ── */}
 
+        {/* TOP LEFT: Gallery Heading */}
+        <div className="absolute top-8 left-8 md:top-12 md:left-16 z-20 select-none">
+          <span className="text-[10px] uppercase tracking-[0.28em] text-rose-gold font-semibold block mb-0.5 opacity-90">
+            Visual Journal
+          </span>
+          <h2 className="font-playfair font-extrabold text-white text-xl sm:text-2xl tracking-wider uppercase leading-none">
+            Our <span className="font-script text-rose-gold capitalize tracking-normal text-3xl sm:text-4xl ml-1 inline-block -rotate-3">Memories</span>
+          </h2>
+        </div>
+
         {/* TOP RIGHT: Page Counter */}
         <div className="absolute top-8 right-8 md:top-12 md:right-16 z-20 select-none">
           <p className="font-playfair font-normal text-white/80 text-xl sm:text-2xl tracking-[0.1em]">
