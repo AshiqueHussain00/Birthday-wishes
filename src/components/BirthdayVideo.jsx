@@ -4,7 +4,8 @@ import { FaPlay, FaPause, FaRedo, FaTimes } from 'react-icons/fa';
 
 /* ══════════════════════════════════════════════
    CONSTANTS
-════════�const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+*/
+const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
 /* ══════════════════════════════════════════════
    CANVAS — ANIME PARTICLE SYSTEM
