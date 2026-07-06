@@ -3,15 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 
 const memoryData = [
-  { id: 1,  img: "/images/photo1.jpg",  caption: "Special Day ✨",       desc: "A beautiful beginning to a wonderful memory." },
-  { id: 2,  img: "/images/photo2.jpg",  caption: "Warm Smiles 🌸",       desc: "Your happiness spreads light to everyone around you." },
-  { id: 3,  img: "/images/photo3.jpg",  caption: "Sweet Moments 💖",     desc: "A cozy time filled with warmth and peaceful thoughts." },
-  { id: 4,  img: "/images/photo4.jpg",  caption: "To Many More! 🥂",     desc: "Cheers to a fabulous year ahead." },
-  { id: 5,  img: "/images/photo5.jpg",  caption: "Peace & Vibes ✌️",     desc: "Spreading sunshine with that gorgeous smile." },
-  { id: 6,  img: "/images/photo6.jpg",  caption: "Lovely You 💕",        desc: "Grace and beauty in every single frame." },
-  { id: 7,  img: "/images/photo7.jpg",  caption: "Bold & Beautiful 😎",  desc: "Confidence that shines brighter than any filter." },
-  { id: 8,  img: "/images/photo8.jpg",  caption: "Elegant Vibes 🖤",     desc: "Simple, stunning, and absolutely unforgettable." },
-  { id: 9,  img: "/images/photo9.jpg",  caption: "Golden Hour 🌟",       desc: "Glowing with warmth under the perfect light." },
+  { id: 1,  img: "/images/photo1.jpg",  caption: "Peace & Vibes ✌️",     desc: "Spreading sunshine with that gorgeous smile." },
+  { id: 2,  img: "/images/photo2.jpg",  caption: "Lovely You 💕",        desc: "Grace and beauty in every single frame." },
+  { id: 3,  img: "/images/photo3.jpg",  caption: "Bold & Beautiful 😎",  desc: "Confidence that shines brighter than any filter." },
+  { id: 4,  img: "/images/photo4.jpg",  caption: "Elegant Vibes 🖤",     desc: "Simple, stunning, and absolutely unforgettable." },
+  { id: 5,  img: "/images/photo5.jpg",  caption: "Golden Hour 🌟",       desc: "Glowing with warmth under the perfect light." },
 ];
 
 /* ─── Image Fallback ─── */
