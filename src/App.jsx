@@ -6,10 +6,12 @@ import SurpriseGift from './components/SurpriseGift';
 import FloatingEffects from './components/FloatingEffects';
 import Roadmap from './components/Roadmap';
 import BirthdayVideo from './components/BirthdayVideo';
+import WelcomeScreen from './components/WelcomeScreen';
 
 function App() {
   const BIRTHDAY_NAME = "Priyanka (Piku)";
   const [showVideo, setShowVideo] = useState(false);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -20,9 +22,16 @@ function App() {
 
   return (
     <div
-      className="min-h-screen text-charcoal selection:bg-rose-gold/25 selection:text-dark-rose relative overflow-hidden font-outfit"
+      className={`min-h-screen text-charcoal selection:bg-rose-gold/25 selection:text-dark-rose relative font-outfit ${!started ? 'overflow-hidden h-screen' : 'overflow-hidden'}`}
       style={{ backgroundColor: '#FBF7F1' }}
     >
+      {/* Welcome Screen Overlay */}
+      <AnimatePresence>
+        {!started && (
+          <WelcomeScreen key="welcome" onStart={() => setStarted(true)} />
+        )}
+      </AnimatePresence>
+
       {/* Background Canvas Petal Animation */}
       <FloatingEffects />
 
