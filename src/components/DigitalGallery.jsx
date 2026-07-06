@@ -18,6 +18,8 @@ const memoryData = [
   { id: 13, img: "/images/photo13.jpg", caption: "Composed & Calm 💭",   desc: "Deep thoughts and quiet elegance in a cozy moment." },
   { id: 14, img: "/images/photo14.jpg", caption: "Traditional Grace 🥻", desc: "Stunning radiance in a beautiful traditional blue saree." },
   { id: 15, img: "/images/photo15.jpg", caption: "Adventures Await 🎒",   desc: "Ready to explore the world with curiosity and safety." },
+  { id: 16, img: "/images/photo16.jpg", caption: "Sleek & Chic 🕶️",       desc: "Styling it up with confidence and an effortless look." },
+  { id: 17, img: "/images/photo17.jpg", caption: "Friendly Waves 👋",     desc: "Waving hello from the court with that bright energy." },
 ];
 
 /* ─── Image Fallback ─── */
