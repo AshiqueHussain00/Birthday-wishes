@@ -22,10 +22,10 @@ export default function WelcomeScreen({ onStart }) {
         className="relative z-10 text-center px-4 w-full max-w-2xl"
       >
         {/* Slogan */}
-        <h1 className="font-playfair text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#2C282B] tracking-wide mb-6 leading-tight">
-          Ashique <br className="sm:hidden" />
-          <span className="font-script text-[#C2788A] font-normal px-2 text-6xl sm:text-7xl md:text-8xl lowercase">with</span> <br className="sm:hidden" />
-          Priyanka
+        <h1 className="font-playfair text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#2C282B] tracking-wide mb-6 leading-tight">
+          Best Wishes <br className="sm:hidden" />
+          <span className="font-script text-[#C2788A] font-normal px-2 text-5xl sm:text-6xl md:text-7xl lowercase">from</span> Ashique <br className="sm:hidden" />
+          <span className="font-script text-[#C2788A] font-normal px-2 text-5xl sm:text-6xl md:text-7xl lowercase">to</span> Priyanka
         </h1>
         
         <p className="font-outfit text-xs sm:text-sm md:text-base text-[#7A6E78] tracking-[0.25em] uppercase mb-12 opacity-80">
