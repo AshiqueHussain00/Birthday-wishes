@@ -13,6 +13,11 @@ const memoryData = [
   { id: 8,  img: "/images/photo8.jpg",  caption: "Simply Radiant ✨",   desc: "Every picture captures your genuine charm." },
   { id: 9,  img: "/images/photo9.jpg",  caption: "Warm & Cozy 💙",       desc: "Bringing warmth to the coldest winter days." },
   { id: 10, img: "/images/photo10.jpg", caption: "Office Mode 💻",       desc: "Making everyday work moments look fun and cute." },
+  { id: 11, img: "/images/photo11.jpg", caption: "Life at 9:09 PM 💖",   desc: "Cherishing quiet evenings and warm thoughts." },
+  { id: 12, img: "/images/photo12.jpg", caption: "Learning & Creating 🤖", desc: "Building futures and coding dreams one screen at a time." },
+  { id: 13, img: "/images/photo13.jpg", caption: "Composed & Calm 💭",   desc: "Deep thoughts and quiet elegance in a cozy moment." },
+  { id: 14, img: "/images/photo14.jpg", caption: "Traditional Grace 🥻", desc: "Stunning radiance in a beautiful traditional blue saree." },
+  { id: 15, img: "/images/photo15.jpg", caption: "Adventures Await 🎒",   desc: "Ready to explore the world with curiosity and safety." },
 ];
 
 /* ─── Image Fallback ─── */
