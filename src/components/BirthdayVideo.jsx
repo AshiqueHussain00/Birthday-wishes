@@ -527,6 +527,10 @@ const textReveal = {
 /* ══════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════ */
+const TOTAL = 30;
+const NUM_SCENES = 6;
+const SCENE_DUR = 5;
+
 export default function BirthdayVideo({ onClose }) {
   const canvasRef = useRef(null);
   const rafRef    = useRef(null);
