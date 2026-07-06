@@ -5,7 +5,7 @@ import { HiSparkles } from 'react-icons/hi';
 
 const roadmapData = [
   {
-    date: "October 2021",
+    date: "2021",
     title: "The Spark",
     emoji: "⚡",
     description: "The very beginning — a simple connection that instantly turned into deep conversations, shared laughter, and endless dreams painted together.",
@@ -14,7 +14,7 @@ const roadmapData = [
     bg: 'linear-gradient(135deg, #FDF0F3, #FBF7F1)',
   },
   {
-    date: "October 2022",
+    date: "2022",
     title: "A Year of Laughter",
     emoji: "🌸",
     description: "Twelve months of inside jokes, shared secrets, and realising that everything in life is infinitely brighter when we face it side by side.",
@@ -23,7 +23,7 @@ const roadmapData = [
     bg: 'linear-gradient(135deg, #FDF0F3, #FCDFE5)',
   },
   {
-    date: "October 2023",
+    date: "2023",
     title: "Growing Together",
     emoji: "🌱",
     description: "Building a foundation of trust, deep understanding, and unwavering support — cheering each other on through every milestone.",
@@ -32,7 +32,7 @@ const roadmapData = [
     bg: 'linear-gradient(135deg, #FBF7F1, #F5E6C8)',
   },
   {
-    date: "October 2024",
+    date: "2024",
     title: "Beautiful Adventures",
     emoji: "✈️",
     description: "Exploring new horizons, capturing gorgeous memories, and writing a story that feels more beautiful with every passing chapter.",
@@ -41,7 +41,7 @@ const roadmapData = [
     bg: 'linear-gradient(135deg, #FDF0F3, #FBF7F1)',
   },
   {
-    date: "October 2025",
+    date: "2025",
     title: "The Deepening Bond",
     emoji: "❤️",
     description: "Facing challenges hand-in-hand, growing stronger together, and becoming more certain than ever of how truly special this journey is.",
@@ -111,7 +111,7 @@ export default function Roadmap() {
             transition={{ duration: 1.0 }}
             className="text-muted font-light text-sm sm:text-base leading-relaxed"
           >
-            Tracing our beautiful story — step by step — from October 2021 to today.
+            Tracing our beautiful story — step by step — from 2021 to today.
           </motion.p>
         </div>
 
