@@ -48,13 +48,11 @@ function fireConfetti() {
   frame();
 }
 
-/* ─── Floating particle decoration ─── */
+/* ─── Static decorative dot (no motion.div needed) ─── */
 function FloatingDot({ style }) {
   return (
-    <motion.div
-      animate={{ y: [0, -14, 0], opacity: [0.4, 0.8, 0.4] }}
-      transition={{ repeat: Infinity, duration: 3 + Math.random() * 2, ease: 'easeInOut' }}
-      className="absolute rounded-full pointer-events-none"
+    <div
+      className="absolute rounded-full pointer-events-none hidden md:block"
       style={style}
     />
   );
@@ -78,14 +76,12 @@ export default function SurpriseGift() {
       className="relative py-20 md:py-32 overflow-hidden font-outfit"
       style={{ background: 'linear-gradient(160deg,#FDF0F3 0%,#FBF7F1 50%,#F5E6C8 100%)' }}
     >
-      {/* ─ Background blobs ─ */}
+      {/* ─ Background blobs (hidden on mobile for performance) ─ */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 -left-24 w-64 h-64 md:w-96 md:h-96 rounded-full opacity-20 blur-3xl animate-float-slow"
+        <div className="hidden md:block absolute top-1/4 -left-24 w-96 h-96 rounded-full opacity-20"
           style={{ background: 'radial-gradient(circle,#C2788A,transparent)' }} />
-        <div className="absolute bottom-1/4 -right-24 w-56 h-56 md:w-80 md:h-80 rounded-full opacity-15 blur-3xl animate-float-delay"
+        <div className="hidden md:block absolute bottom-1/4 -right-24 w-80 h-80 rounded-full opacity-15"
           style={{ background: 'radial-gradient(circle,#C9A96E,transparent)' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 md:w-[500px] md:h-[500px] rounded-full opacity-10 blur-3xl"
-          style={{ background: 'radial-gradient(circle,#C2788A,transparent)' }} />
         <FloatingDot style={{ top:'12%', left:'8%',  width:10, height:10, background:'#C2788A', opacity:0.3 }} />
         <FloatingDot style={{ top:'25%', right:'10%', width:7,  height:7,  background:'#C9A96E', opacity:0.35 }} />
         <FloatingDot style={{ bottom:'20%', left:'15%', width:8, height:8, background:'#9C4A5C', opacity:0.25 }} />
@@ -129,26 +125,20 @@ export default function SurpriseGift() {
                 style={{ width: 240, height: 240 }}
                 onClick={handleOpen}
               >
-                {/* Orbit rings */}
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 12, ease: 'linear' }}
+                {/* Orbit rings (static CSS — no motion animation) */}
+                <div
                   className="absolute w-56 h-56 rounded-full border border-dashed pointer-events-none"
                   style={{ borderColor: 'rgba(194,120,138,0.25)' }}
                 />
-                <motion.div
-                  animate={{ rotate: -360 }}
-                  transition={{ repeat: Infinity, duration: 8, ease: 'linear' }}
+                <div
                   className="absolute w-40 h-40 rounded-full border pointer-events-none"
                   style={{ borderColor: 'rgba(201,169,110,0.2)' }}
                 />
 
-                {/* Pulsing glow */}
-                <motion.div
-                  animate={{ scale: [1,1.18,1], opacity:[0.2,0.42,0.2] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                  className="absolute w-36 h-36 rounded-[2rem] blur-2xl pointer-events-none"
-                  style={{ background: 'linear-gradient(135deg,#C2788A,#C9A96E)' }}
+                {/* Pulsing glow (CSS animation instead of motion) */}
+                <div
+                  className="absolute w-36 h-36 rounded-[2rem] pointer-events-none animate-pulse"
+                  style={{ background: 'linear-gradient(135deg,#C2788A,#C9A96E)', opacity: 0.25 }}
                 />
 
                 {/* Sparkle orbit dots */}

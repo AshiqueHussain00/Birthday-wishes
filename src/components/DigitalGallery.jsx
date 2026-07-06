@@ -81,13 +81,15 @@ export default function DigitalGallery() {
           }}
         />
 
-        {/* ── INTERACTIVE PHOTO SLIDES (Strictly 3 Visible with Absolute Positioning & Infinite Loop) ── */}
         <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
           {memoryData.map((memory, index) => {
             // Calculate shortest distance in a circle
             let diff = index - activeIndex;
             if (diff < -Math.floor(total / 2)) diff += total;
             if (diff > Math.floor(total / 2)) diff -= total;
+
+            // Only render 5 cards: active + 2 on each side (perf optimization)
+            if (Math.abs(diff) > 2) return null;
 
             let x = '0%';
             let scale = 0.85;
@@ -96,28 +98,24 @@ export default function DigitalGallery() {
             let isInteractive = false;
 
             if (diff === 0) {
-              // Center card
               x = '0%';
               scale = 1;
               opacity = 1;
               zIndex = 10;
               isInteractive = true;
             } else if (diff === -1) {
-              // Left card
               x = '-110%';
               scale = 0.85;
               opacity = 0.35;
               zIndex = 5;
               isInteractive = true;
             } else if (diff === 1) {
-              // Right card
               x = '110%';
               scale = 0.85;
               opacity = 0.35;
               zIndex = 5;
               isInteractive = true;
             } else {
-              // Hidden cards (pre-positioned off-screen for smooth sliding in)
               x = diff < 0 ? '-220%' : '220%';
               scale = 0.85;
               opacity = 0;
@@ -132,6 +130,7 @@ export default function DigitalGallery() {
                 transition={{ type: 'spring', stiffness: 260, damping: 25, mass: 1 }}
                 style={{
                   pointerEvents: isInteractive ? 'auto' : 'none',
+                  willChange: 'transform, opacity',
                   boxShadow: diff === 0 
                     ? '0 30px 60px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)' 
                     : '0 10px 30px -10px rgba(0,0,0,0.6)'
@@ -248,7 +247,7 @@ export default function DigitalGallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/96 backdrop-blur-xl"
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/98"
             onClick={() => setLightbox(null)}
           >
             {/* Close */}

@@ -10,16 +10,16 @@ export default function Hero({ name, onPlayVideo }) {
       className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden font-outfit w-full px-4 sm:px-6 md:px-8"
       style={{ background: 'linear-gradient(135deg, #FDF0F3 0%, #FBF7F1 45%, #F5E6C8 100%)' }}
     >
-      {/* ── Atmospheric background blobs ── */}
+      {/* ── Atmospheric background blobs (hidden on mobile for performance) ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-16 -left-16 w-64 h-64 sm:w-96 sm:h-96 md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] rounded-full opacity-40 animate-float-slow"
+        <div className="hidden md:block absolute -top-16 -left-16 w-[500px] h-[500px] lg:w-[700px] lg:h-[700px] rounded-full opacity-40"
           style={{ background: 'radial-gradient(circle, #F4B8C6 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-20 -right-16 w-72 h-72 sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] rounded-full opacity-30 animate-float-delay"
+        <div className="hidden md:block absolute -bottom-20 -right-16 w-[600px] h-[600px] lg:w-[800px] lg:h-[800px] rounded-full opacity-30"
           style={{ background: 'radial-gradient(circle, #F5E6C8 0%, transparent 70%)' }} />
-        <div className="absolute top-1/3 right-4 w-40 h-40 md:w-72 md:h-72 rounded-full opacity-20 animate-float-fast"
+        <div className="hidden md:block absolute top-1/3 right-4 w-72 h-72 rounded-full opacity-20"
           style={{ background: 'radial-gradient(circle, #C2788A 0%, transparent 70%)' }} />
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-[0.03]"
+        {/* Dot grid — desktop only */}
+        <div className="hidden md:block absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: 'radial-gradient(circle, #9C4A5C 1px, transparent 1px)',
             backgroundSize: '28px 28px',
@@ -31,7 +31,12 @@ export default function Hero({ name, onPlayVideo }) {
         initial={{ opacity: 0, y: 40, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative z-10 glass-premium rounded-3xl sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 md:p-16 lg:p-20 text-center w-full max-w-[92vw] lg:max-w-6xl mx-auto shadow-2xl"
+        className="relative z-10 rounded-3xl sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 md:p-16 lg:p-20 text-center w-full max-w-[92vw] lg:max-w-6xl mx-auto shadow-2xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)',
+          border: '1px solid rgba(255,255,255,0.70)',
+          boxShadow: '0 24px 60px rgba(156,74,92,0.08), 0 4px 12px rgba(156,74,92,0.05), inset 0 0 30px rgba(255,255,255,0.25)',
+        }}
       >
         {/* Badge */}
         <motion.div

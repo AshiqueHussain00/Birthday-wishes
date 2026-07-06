@@ -68,7 +68,7 @@ export default function Roadmap() {
     >
       {/* ── Background ── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full opacity-10 blur-3xl"
+        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full opacity-10"
           style={{ background: 'radial-gradient(circle, #C2788A, transparent)' }} />
         <div className="absolute inset-0 opacity-[0.025]"
           style={{
